@@ -1,3 +1,79 @@
+# Virtual environments
+venv/
+env/
+.venv/
+.env/
+conda/
+.conda/
+envs/
+.conda_env/
+pyenv/
+virtualenv/
+.virtualenv/
+python_env/
+.py_env/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution / Packaging
+build/
+dist/
+*.egg-info/
+.eggs/
+wheels/
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.cache/
+.coverage
+coverage.xml
+*.cover
+
+# Logs
+*.log
+
+# Pytest cache
+.pytest_cache/
+
+# MyPy cache
+.mypy_cache/
+
+# PyCharm files
+.idea/
+
+# VSCode files
+.vscode/
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+
+# MacOS
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# Other IDE and editor files
+*.sublime-project
+*.sublime-workspace
+*.vscode
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
