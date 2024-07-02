@@ -3,7 +3,45 @@ import pdfplumber
 import fitz
 import tkinter as tk
 from tkinter import filedialog, messagebox
+import panflute as pf
 
+# Function to remove unnecessary whitespace and replace with backslash
+def remove_whitespace(text):
+    return "\\".join(text.split())
+
+# Function to process inline elements
+def process_inlines(elem):
+    if isinstance(elem, pf.Str):
+        return pf.Str(remove_whitespace(elem.text))
+    return elem
+
+# Function to process block elements
+def process_blocks(elem, doc):
+    if isinstance(elem, pf.Para) or isinstance(elem, pf.Plain):
+        return elem.walk(process_inlines)
+    elif isinstance(elem, pf.BulletList) or isinstance(elem, pf.OrderedList):
+        new_list = []
+        for item in elem.content:
+            new_item = []
+            for subitem in item:
+                if isinstance(subitem, pf.Plain) or isinstance(subitem, pf.Para):
+                    new_item.append(subitem.walk(process_inlines))
+                else:
+                    new_item.append(subitem)
+            new_list.append(new_item)
+        if isinstance(elem, pf.BulletList):
+            return pf.BulletList(*new_list)
+        else:
+            return pf.OrderedList(*new_list)
+    return elem
+
+# Main function to process the document
+def apply_filter_to_markdown(md_content):
+    doc = pf.convert_text(md_content)
+    doc = pf.run_filter(process_blocks, doc=doc)
+    return pf.convert_text(doc, output_format="markdown")
+
+# PDF to Markdown conversion with images
 def pdf_to_md_images(pdf_path, md_output, media):
     os.makedirs(media, exist_ok=True)
 
@@ -15,6 +53,8 @@ def pdf_to_md_images(pdf_path, md_output, media):
             markdown_text += f"## Page {i+1}\n\n"
             if page_text:
                 markdown_text += page_text + "\n\n"
+
+    markdown_text = apply_filter_to_markdown(markdown_text)
 
     with open(md_output, "w", encoding="utf-8") as file:
         file.write(markdown_text)
@@ -39,16 +79,19 @@ def pdf_to_md_images(pdf_path, md_output, media):
     pdf_doc.close()
     messagebox.showinfo("Success", "PDF conversion completed successfully!")
 
+# Browse PDF file
 def browse_pdf():
     pdf_path = filedialog.askopenfilename(filetypes=[("PDF Files", "*.pdf")])
     pdf_entry.delete(0, tk.END)
     pdf_entry.insert(0, pdf_path)
 
+# Browse output directory
 def browse_output():
     output_path = filedialog.askdirectory()
     output_entry.delete(0, tk.END)
     output_entry.insert(0, output_path)
 
+# Start PDF to Markdown conversion
 def start_conversion():
     pdf_path = pdf_entry.get()
     output_dir = output_entry.get()
@@ -64,6 +107,7 @@ def start_conversion():
     except Exception as e:
         messagebox.showerror("Error", f"An error occurred: {e}")
 
+# GUI setup
 app = tk.Tk()
 app.title("PDF to Markdown Converter")
 
