@@ -27,10 +27,10 @@ def pdf_to_md_images(pdf_path, md_output, media):
 
     for page_num in range(len(pdf_doc)):
         page = pdf_doc.load_page(page_num)
-        image_list = page.get_images(full=True)
+        image_list = page.getImageList()
 
-        for image_index, img_info in enumerate(image_list, start=1):
-            xref = img_info[0]
+        for image_index, img in enumerate(image_list, start=1):
+            xref = img[0]
             base_image = pdf_doc.extract_image(xref)
             image_bytes = base_image["image"]
             image_ext = base_image["ext"]

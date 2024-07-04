@@ -15,7 +15,7 @@ pdf_label.grid(row=0, column=0, sticky=tk.W)
 pdf_entry = tk.Entry(frame, width=50)
 pdf_entry.grid(row=0, column=1, padx=5, pady=5)
 
-pdf_button = tk.Button(frame, text="Browse...", command=browse_pdf)
+pdf_button = tk.Button(frame, text="Browse...", command=lambda: browse_pdf(pdf_entry))
 pdf_button.grid(row=0, column=2, padx=5, pady=5)
 
 output_label = tk.Label(frame, text="Select Output Directory:")
@@ -24,10 +24,10 @@ output_label.grid(row=1, column=0, sticky=tk.W)
 output_entry = tk.Entry(frame, width=50)
 output_entry.grid(row=1, column=1, padx=5, pady=5)
 
-output_button = tk.Button(frame, text="Browse...", command=browse_output)
+output_button = tk.Button(frame, text="Browse...", command=lambda: browse_output(output_entry))
 output_button.grid(row=1, column=2, padx=5, pady=5)
 
-convert_button = tk.Button(frame, text="Convert PDF", command=start_conversion, bg="blue", fg="white")
+convert_button = tk.Button(frame, text="Convert PDF", command=lambda: start_conversion(pdf_entry, output_entry, pdf_to_md_images), bg="blue", fg="white")
 convert_button.grid(row=2, columnspan=3, pady=10)
 
 app.mainloop()

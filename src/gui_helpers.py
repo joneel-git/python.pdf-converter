@@ -1,19 +1,18 @@
-import tkinter as tk  # Import tkinter here to resolve tk not resolved issue
+import tkinter as tk
 from tkinter import filedialog, messagebox
 import os
-from main_app import pdf_entry, output_entry, pdf_to_md_images
 
-def browse_pdf():
+def browse_pdf(pdf_entry):
     pdf_path = filedialog.askopenfilename(filetypes=[("PDF Files", "*.pdf")])
     pdf_entry.delete(0, tk.END)
     pdf_entry.insert(0, pdf_path)
 
-def browse_output():
+def browse_output(output_entry):
     output_path = filedialog.askdirectory()
     output_entry.delete(0, tk.END)
     output_entry.insert(0, output_path)
 
-def start_conversion():
+def start_conversion(pdf_entry, output_entry, pdf_to_md_images):
     pdf_path = pdf_entry.get()
     output_dir = output_entry.get()
     if not pdf_path or not output_dir:
